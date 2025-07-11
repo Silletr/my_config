@@ -1,6 +1,5 @@
+-- Early configuration
 vim.g.python3_host_prog = '/usr/bin/python3.10'
-
--- включаем полноцветность
 vim.o.termguicolors = true
 vim.o.background = "dark"
 
@@ -11,8 +10,9 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.clipboard = 'unnamedplus'
 
-vim.g.mapleader = ' '  -- leader = space
+vim.g.mapleader = '<H>'  -- leader = H
 
+-- Packer configuration
 local packer_ok, packer = pcall(require, 'packer')
 if not packer_ok then
   vim.notify("Packer not found!", vim.log.levels.ERROR)
@@ -21,7 +21,6 @@ end
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-
   -- 🎨 Theme
   use {
     'navarasu/onedark.nvim',
@@ -116,7 +115,7 @@ packer.startup(function(use)
         },
         actions = {
           open_file = {
-            quit_on_open = false,
+            quit_on_open = true,
             resize_window = true,
           },
         },
@@ -125,20 +124,8 @@ packer.startup(function(use)
   }
 end)
 
-vim.api.nvim_create_user_command('CheckPython', function()
-    local has_python = vim.fn.has('python3')
-    local python_path = vim.g.python3_host_prog
-    vim.notify(string.format('Python3 support: %s\nPython path: %s', 
-        has_python == 1 and '✓ Available' or '✗ Not available',
-        python_path or 'Not configured'
-    ))
-end, {})
-
-
 vim.cmd [[colorscheme onedark]]
-local lazy_ok, lazy = pcall(require, "LazyDevHelper.plugin.commands")
+local lazy_ok, lazy = pcall(require, "LazyDeveloperHelper.plugin.commands")
 if lazy_ok and lazy.commands then lazy.commands() end
-
 vim.keymap.set("n", "<C-b>", ":NvimTreeToggle<CR>", { noremap=true, silent=true })
-vim.keymap.set("n", "<C-g>", ":NvimTreeFindFile<CR>", { noremap=true, silent=true })
-
+vim.keymap.set("n", "<C-g>", ":NvimTreeFindFile<CR>", { noremap=true, silent=true})
