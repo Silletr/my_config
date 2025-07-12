@@ -1,18 +1,16 @@
--- Early configuration
+-- 🔧  base setting
 vim.g.python3_host_prog = '/usr/bin/python3.10'
 vim.o.termguicolors = true
 vim.o.background = "dark"
-
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.clipboard = 'unnamedplus'
+vim.g.mapleader = '<H>'
 
-vim.g.mapleader = '<H>'  -- leader = H
-
--- Packer configuration
+-- 🧩 Packer setup
 local packer_ok, packer = pcall(require, 'packer')
 if not packer_ok then
   vim.notify("Packer not found!", vim.log.levels.ERROR)
@@ -21,31 +19,40 @@ end
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+    config = function()
+        require('lualine').setup {
+        options = {
+            theme = 'tokyonight',
+            icons_enabled = true,
+            section_separators = '',
+            component_separators = '',
+            }
+        }
+    end
+    }
+
   -- 🎨 Theme
   use {
-    'navarasu/onedark.nvim',
+    'folke/tokyonight.nvim',
     config = function()
-      require('onedark').setup { style = 'deep' }
-      require('onedark').load()
-    end,
+      require("tokyonight").setup({
+        style = "moon",
+        transparent = true,
+        terminal_colors = true,
+      })
+      vim.cmd[[colorscheme tokyonight]]
+    end
   }
 
-  -- 📝 Autocomplete
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  -- UI
-  use 'sheerun/vim-polyglot'
-  use 'vim-airline/vim-airline'
-  use 'vim-airline/vim-airline-themes'
+  -- 🌐 Icons
+  use { 'nvim-tree/nvim-web-devicons' }
 
- -- File tree
+  -- 🌲 File Tree
   use {
     'nvim-tree/nvim-tree.lua',
-    requires = {
-      'nvim-tree/nvim-web-devicons',
-    },
     config = function()
       require('nvim-tree').setup({
         renderer = {
@@ -120,12 +127,15 @@ packer.startup(function(use)
           },
         },
       })
-    end,
+    end
   }
+
 end)
 
-vim.cmd [[colorscheme onedark]]
 local lazy_ok, lazy = pcall(require, "LazyDeveloperHelper.plugin.commands")
 if lazy_ok and lazy.commands then lazy.commands() end
+
 vim.keymap.set("n", "<C-b>", ":NvimTreeToggle<CR>", { noremap=true, silent=true })
-vim.keymap.set("n", "<C-g>", ":NvimTreeFindFile<CR>", { noremap=true, silent=true})
+vim.keymap.set("n", "<C-g>", ":NvimTreeFindFile<CR>", { noremap=true, silent=true })
+
+vim.cmd[[colorscheme tokyonight]]
