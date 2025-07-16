@@ -33,13 +33,14 @@ packer.startup(function(use)
         }
     end
     }
-
+  -- Myself plugin for test
+  use 'Silletr/LazyDevHelper'
   -- 🎨 Theme
   use {
     'folke/tokyonight.nvim',
     config = function()
       require("tokyonight").setup({
-        style = "moon",
+        style = "storm",
         transparent = true,
         terminal_colors = true,
       })
@@ -137,5 +138,3 @@ if lazy_ok and lazy.commands then lazy.commands() end
 
 vim.keymap.set("n", "<C-b>", ":NvimTreeToggle<CR>", { noremap=true, silent=true })
 vim.keymap.set("n", "<C-g>", ":NvimTreeFindFile<CR>", { noremap=true, silent=true })
-
-vim.cmd[[colorscheme tokyonight]]
