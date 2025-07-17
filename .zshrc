@@ -36,25 +36,32 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # Git aliases
 alias gst='git status'
 alias gcm='git commit -m'
+
 alias gac='git add . && git commit'
 alias gp='git push origin'
+
 alias gpl='git pull origin'
 alias gbc='git switch'
+
 alias gmb='git merge origin'
 
 # System aliases
 alias reload='source ~/.zshrc'
 alias c='clear'
-alias format_ruff='ruff check . --fix && ruff format'
+
+alias format_ruff='ruff check . --fix && ruff format .'
 alias move='mv'
+
 alias remove='rm -i'
 alias rm_fold='rm -rf'
+
 # Application-specific aliases
 alias lazy_git='/snap/bin/lazygit'
 alias st='streamlit run main.py'
+
 alias calc='cd streamlit_apps/Exchange_Calculator'
-alias lazydevhelp='cd ~/.config/nvim/lua/LazyDeveloperHelper && git switch dev'
-alias SilleOs='cd SaillOs && gst && git pull'
+alias lazydevhelp='cd ~/.config/nvim/lua/LazyDeveloperHelper && source LazyEnv/bin/activate && git switch dev'
+
 alias e='exit'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
