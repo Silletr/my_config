@@ -33,8 +33,14 @@ packer.startup(function(use)
         }
     end
     }
-  -- Myself plugin for test
-  use 'Silletr/LazyDevHelper'
+  -- Myself plugin
+  use {
+    'Silletr/LazyDevHelper',
+    config = function()
+      require("LazyDeveloperHelper")
+    end
+  }
+
   -- 🎨 Theme
   use {
     'folke/tokyonight.nvim',
@@ -108,7 +114,7 @@ packer.startup(function(use)
           ignore_list = {},
         },
         filters = {
-          dotfiles = false,
+          dotfiles = true,
           custom = {},
           exclude = {'.git', 'node_modules', '.cache'},
         },
@@ -132,9 +138,6 @@ packer.startup(function(use)
   }
 
 end)
-
-local lazy_ok, lazy = pcall(require, "LazyDeveloperHelper.plugin.commands")
-if lazy_ok and lazy.commands then lazy.commands() end
 
 vim.keymap.set("n", "<C-b>", ":NvimTreeToggle<CR>", { noremap=true, silent=true })
 vim.keymap.set("n", "<C-g>", ":NvimTreeFindFile<CR>", { noremap=true, silent=true })
