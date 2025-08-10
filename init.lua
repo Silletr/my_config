@@ -33,12 +33,20 @@ packer.startup(function(use)
         }
     end
     }
+  -- nvim notify
+  use({
+    "rcarriga/nvim-notify",
+    config = function()
+        vim.notify = require("notify") 
+    end,
+    })
+
 
   -- my plugin
   use {
     'Silletr/LazyDeveloperHelper',
     config = function()
-      require("LazyDeveloperHelper")
+      require("LazyDeveloperHelper").setup()
     end
   }
 
