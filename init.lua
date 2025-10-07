@@ -7,7 +7,7 @@ vim.o.relativenumber = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
-vim.o.clipboard = 'unnamedplus'
+vim.opt.clipboard:append("unnamedplus")
 vim.g.mapleader = '<H>'
 
 -- 🧩 Lazy.nvim setup
@@ -202,4 +202,5 @@ lspconfig.lua_ls.setup { on_attach = on_attach }
 -- Keymaps for NvimTree
 vim.keymap.set("n", "<C-b>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-g>", ":NvimTreeFindFile<CR>", { noremap = true, silent = true })
+
 
