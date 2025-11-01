@@ -36,7 +36,6 @@ source $ZSH/oh-my-zsh.sh
 # === Aliases ===
 alias gst='git status'
 alias gcm='git commit -m'
-alias gac='git add .; git commit'
 alias gp='git push origin'
 alias gpl='git pull origin'
 alias gbc='git switch'
@@ -50,10 +49,10 @@ alias rm_fold='rm -rf -d'
 alias lazy_git='/snap/bin/lazygit'
 alias st='streamlit run main.py'
 alias calc='cd streamlit_apps/Exchange_Calculator'
-alias lazydevhelp='cd ~/.config/nvim/lua/LazyDeveloperHelper; source ~/Projects/ProjectsEnv/bin/activate; git switch dev'
-alias SilleOs='cd SaillOs; gst; git pull'
+alias lazydevhelp='cd ~/.config/nvim/lua/LazyDeveloperHelper; source ~/Projects/ProjectsEnv/bin/activate && git switch dev'
+alias SilleOs='cd SaillOs && gst && git pull'
 alias e='exit'
-alias reload='source ~/.zshrc; echo "🔄 zsh reloaded!"'
+alias reload='source ~/.zshrc && echo "🔄 zsh reloaded!"'
 
 # === P10K ===
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
