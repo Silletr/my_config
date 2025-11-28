@@ -20,7 +20,6 @@ export PYTHONPATH="$HOME/.pythonrc:$PYTHONPATH"
 # === Oh My Zsh ===
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
 # === Completion ===
 plugins=(
   git
@@ -36,23 +35,38 @@ source $ZSH/oh-my-zsh.sh
 # === Aliases ===
 alias gst='git status'
 alias gcm='git commit -m'
+alias gac='git add .; git commit'
 alias gp='git push origin'
 alias gpl='git pull origin'
 alias gbc='git switch'
 
 alias c='clear'
 alias format_ruff='ruff check . --fix'
+alias e='exit'
+alias reload='source ~/.zshrc; echo "🔄 zsh reloaded!"'
 alias move='mv'
 alias remove='rm -i'
 alias rm_fold='rm -rf -d'
 
+# === Utilities
 alias lazy_git='/snap/bin/lazygit'
+alias jq='jq .'
+# === CLI Projects ===
 alias st='streamlit run main.py'
 alias calc='cd streamlit_apps/Exchange_Calculator'
-alias lazydevhelp='cd ~/.config/nvim/lua/LazyDeveloperHelper; source ~/Projects/ProjectsEnv/bin/activate && git switch dev'
-alias SilleOs='cd SaillOs && gst && git pull'
-alias e='exit'
-alias reload='source ~/.zshrc && echo "🔄 zsh reloaded!"'
 
+# === Hand-made NeoVim Plugins ===
+alias lazydevhelp='cd ~/Projects/LazyDeveloperHelper && source ~/Projects/ProjectsEnv/bin/activate && git switch dev'
+alias gpt_coding="cd ~/Projects/GPTCodeNvim && source ~/Projects/ProjectsEnv/bin/activate"
+
+# === Rython ===
+alias rython='python3 ~/Projects/Rython/rython/test.py'
+alias rython_dir="cd ~/Projects/Rython/ && source ~/Projects/ProjectsEnv/bin/activate"
+alias build_rython="cd ~/Projects/Rython/ && source ~/Projects/ProjectsEnv/bin/activate && cd rython/jit/__rust__/ && cargo build --release && maturin develop --release"
+alias move_rython_so='cd "$HOME/Projects/Rython/rython/jit/__rust__/target/release" && mv -f librython_jit.so rython_jit.so && mv -f rython_jit.so ../../../../../'
+
+# === Telegram bots
+alias telegram_bot='cd ~/Projects/bots/ && source ~/Projects/ProjectsEnv/bin/activate'
 # === P10K ===
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
