@@ -1,45 +1,62 @@
-# Enable Powerlevel10k instant prompt
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+#!/bin/zsh
+
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/starship-prompt-${(%):-%n}.toml" ]]; then
+  eval "$(starship init zsh --print-full-init | sed -n '1p')"
 fi
 
-# === PATH ===
+export PATH="$HOME/.bun/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:/usr/bin"
 export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
-export PATH="$PATH:$JAVA_HOME/bin"
-export PATH="$HOME/.local/share/gem/ruby/3.2.0/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
-export PATH="$PATH:/home/silletr/.spicetify"
-export PATH="$PATH:/snap/bin"
+export PATH="$HOME/.local/share/gem/ruby/3.2.0/bin:$PATH"
+export PATH="$PATH:/home/silletr/.spicetify:/snap/bin:/usr/bin"
 
 # === ENV ===
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PYTHONPATH="$HOME/.pythonrc:$PYTHONPATH"
 
-# === Oh My Zsh ===
+# === Oh My Zsh (keep plugins, remove P10K theme) ===
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-# === Completion ===
+ZSH_THEME=""  # Starship takes over
+
+# === ENHANCED Plugins (originals + dev/gamer power) ===
 plugins=(
-  git
-  z
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+  git z zsh-autosuggestions zsh-syntax-highlighting
+  # NEW: Dev productivity (you'll love these)
+  gitfast      # 10x faster git status
+  docker       # Docker completions  
+  python       # Python arg completions
+  rust         # Cargo completions
+  poetry       # Poetry completions (my movie project)
+  npm          # Node/Bun completions
+  
+  # NEW: Gaming/CLI power
+  command-not-found
+  sudo
+  colored-man-pages
+  autojump     # `j project` → jumps to ~/Projects/project
+  
+  # NEW: Modern dev tools
+  direnv       # .envrc auto-loading
+  fzf          # Fuzzy finder integration
 )
+
+source $ZSH/oh-my-zsh.sh
+
+# === Completion (your styles + fzf) ===
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors 'di=36'
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-source $ZSH/oh-my-zsh.sh
+source /usr/share/doc/fzf/examples/key-bindings.zsh 2>/dev/null || true
 
-# === Aliases ===
+
 alias gst='git status'
 alias gcm='git commit -m'
+alias gd='git diff'
 alias gac='git add .; git commit'
 alias gp='git push origin'
 alias gpl='git pull origin'
 alias gbc='git switch'
-
 alias c='clear'
 alias format_ruff='ruff check . --fix'
 alias e='exit'
@@ -47,26 +64,37 @@ alias reload='source ~/.zshrc; echo "🔄 zsh reloaded!"'
 alias move='mv'
 alias remove='rm -i'
 alias rm_fold='rm -rf -d'
-
-# === Utilities
 alias lazy_git='/snap/bin/lazygit'
 alias jq='jq .'
-# === CLI Projects ===
 alias st='streamlit run main.py'
 alias calc='cd streamlit_apps/Exchange_Calculator'
-
-# === Hand-made NeoVim Plugins ===
 alias lazydevhelp='cd ~/Projects/LazyDeveloperHelper && source ~/Projects/ProjectsEnv/bin/activate && git switch dev'
-alias gpt_coding="cd ~/Projects/GPTCodeNvim && source ~/Projects/ProjectsEnv/bin/activate"
-
-# === Rython ===
 alias rython='python3 ~/Projects/Rython/rython/test.py'
 alias rython_dir="cd ~/Projects/Rython/ && source ~/Projects/ProjectsEnv/bin/activate"
 alias build_rython="cd ~/Projects/Rython/ && source ~/Projects/ProjectsEnv/bin/activate && cd rython/jit/__rust__/ && cargo build --release && maturin develop --release"
 alias move_rython_so='cd "$HOME/Projects/Rython/rython/jit/__rust__/target/release" && mv -f librython_jit.so rython_jit.so && mv -f rython_jit.so ../../../../../'
-
-# === Telegram bots
 alias telegram_bot='cd ~/Projects/bots/ && source ~/Projects/ProjectsEnv/bin/activate'
-# === P10K ===
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# === NEW Aliases (dev/gamer you'll use daily) ===
+alias pls='git pl'                          # Shorter pull
+alias gco='git checkout'                    # Branch switch
+alias lg='lazygit'                          # Faster typing
+alias poe='poetry shell'                    # Poetry env
+alias psh='poetry shell && echo "🐍 Poetry active"'
+alias python='python3'                      # WSL fix
+alias pip='pip3'
+alias venv='python -m venv .venv && source .venv/bin/activate'
+alias db='direnv allow'                     # Direnv hook
+alias pj='cd ~/Projects'                    # Projects jump
+alias pg='cd ~/Projects && lsd | fzf | xargs cd'  # Fuzzy project jump
+
+# === Starship (cross-shell, Rust-fast, auto-config) ===
+eval "$(starship init zsh)"
+
+# === FZF (fuzzy finder - install: sudo apt install fzf) ===
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+
+# === ZSH extras (fix compdump errors) ===
+autoload -Uz compinit && compinit -u
+zmodload zdharma-zyntax/zsh-users/zsh-autosuggestions
+zmodload zdharma-zyntax/zsh-syntax-highlighting
