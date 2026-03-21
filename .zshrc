@@ -10,6 +10,7 @@ export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.2.0/bin:$PATH"
 export PATH="$PATH:/home/silletr/.spicetify:/snap/bin:/usr/bin"
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 
 # === ENV ===
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
@@ -42,7 +43,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
+[[ -s /usr/share/autojump/autojump.sh ]] && source /usr/share/autojump/autojump.sh
 # === Completion (your styles + fzf) ===
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors 'di=36'
@@ -57,6 +58,7 @@ alias gac='git add .; git commit'
 alias gp='git push origin'
 alias gpl='git pull origin'
 alias gbc='git switch'
+
 alias c='clear'
 alias format_ruff='ruff check . --fix'
 alias e='exit'
@@ -65,14 +67,17 @@ alias move='mv'
 alias remove='rm -i'
 alias rm_fold='rm -rf -d'
 alias lazy_git='/snap/bin/lazygit'
+
 alias jq='jq .'
 alias st='streamlit run main.py'
 alias calc='cd streamlit_apps/Exchange_Calculator'
 alias lazydevhelp='cd ~/Projects/LazyDeveloperHelper && source ~/Projects/ProjectsEnv/bin/activate && git switch dev'
+
 alias rython='python3 ~/Projects/Rython/rython/test.py'
 alias rython_dir="cd ~/Projects/Rython/ && source ~/Projects/ProjectsEnv/bin/activate"
 alias build_rython="cd ~/Projects/Rython/ && source ~/Projects/ProjectsEnv/bin/activate && cd rython/jit/__rust__/ && cargo build --release && maturin develop --release"
 alias move_rython_so='cd "$HOME/Projects/Rython/rython/jit/__rust__/target/release" && mv -f librython_jit.so rython_jit.so && mv -f rython_jit.so ../../../../../'
+
 alias telegram_bot='cd ~/Projects/bots/ && source ~/Projects/ProjectsEnv/bin/activate'
 
 # === NEW Aliases (dev/gamer you'll use daily) ===
@@ -83,10 +88,13 @@ alias poe='poetry shell'                    # Poetry env
 alias psh='poetry shell && echo "🐍 Poetry active"'
 alias python='python3'                      # WSL fix
 alias pip='pip3'
+alias tree='lsd --tree'
 alias venv='python -m venv .venv && source .venv/bin/activate'
 alias db='direnv allow'                     # Direnv hook
 alias pj='cd ~/Projects'                    # Projects jump
 alias pg='cd ~/Projects && lsd | fzf | xargs cd'  # Fuzzy project jump
+alias ahk='~/.local/bin/ahk_x11.AppImage'
+
 
 # === Starship (cross-shell, Rust-fast, auto-config) ===
 eval "$(starship init zsh)"
@@ -96,5 +104,3 @@ eval "$(starship init zsh)"
 
 # === ZSH extras (fix compdump errors) ===
 autoload -Uz compinit && compinit -u
-zmodload zdharma-zyntax/zsh-users/zsh-autosuggestions
-zmodload zdharma-zyntax/zsh-syntax-highlighting
