@@ -54,9 +54,8 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh 2>/dev/null || true
 alias gst='git status'
 alias gcm='git commit -m'
 alias gd='git diff'
-alias gac='git add .; git commit'
-alias gp='git push origin'
-alias gpl='git pull origin'
+alias gpl='git update'
+alias gms="git merge --squash"
 alias gbc='git switch'
 
 alias c='clear'
@@ -87,9 +86,9 @@ alias lg='lazygit'                          # Faster typing
 alias poe='poetry shell'                    # Poetry env
 alias psh='poetry shell && echo "🐍 Poetry active"'
 alias python='python3'                      # WSL fix
-alias pip='pip3'
+alias pip='python3 -m pip'
 alias tree='lsd --tree'
-alias venv='python -m venv .venv && source .venv/bin/activate'
+alias venv='source ~/Projects/ProjectsEnv/bin/activate'
 alias db='direnv allow'                     # Direnv hook
 alias pj='cd ~/Projects'                    # Projects jump
 alias pg='cd ~/Projects && lsd | fzf | xargs cd'  # Fuzzy project jump
@@ -99,8 +98,30 @@ alias ahk='~/.local/bin/ahk_x11.AppImage'
 # === Starship (cross-shell, Rust-fast, auto-config) ===
 eval "$(starship init zsh)"
 
+# === cord.nvim Discord Bridge ===
+unalias nvim 2>/dev/null || true   # Just in case
+nvim() {
+    if ! pgrep -f "socat UNIX-LISTEN:/tmp/discord-ipc-0" > /dev/null 2>&1; then
+        [ -e /tmp/discord-ipc-0 ] && rm -f /tmp/discord-ipc-0
+
+        socat UNIX-LISTEN:/tmp/discord-ipc-0,fork,reuseaddr \
+            EXEC:"/mnt/d/npiperelay/npiperelay.exe -ei -s //./pipe/discord-ipc-0",nofork 2>/dev/null &
+    fi
+    command nvim "$@"
+}
+
 # === FZF (fuzzy finder - install: sudo apt install fzf) ===
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 # === ZSH extras (fix compdump errors) ===
-autoload -Uz compinit && compinit -u
+
+# Added by deepsource CLI (shell completions)
+fpath=(~/.zsh/completions $fpath)
+autoload -Uz compinit && compinit
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+eval "$(but completions zsh)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
