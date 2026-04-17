@@ -1,1 +1,0 @@
-/home/silletr/.config/nvim/lua/plugins/store.lua
