@@ -3,6 +3,7 @@ return {
   ft = { "markdown" },
   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
   build = function()
-    vim.fn["mkdp#util#install"]()
+    local app_dir = vim.fn.stdpath("data") .. "/lazy/markdown-preview.nvim/app"
+    vim.fn.jobstart({ "npm", "install" }, { cwd = app_dir })
   end,
 }
