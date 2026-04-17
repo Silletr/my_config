@@ -1,6 +1,1 @@
-return {
-  "alex-popov-tech/store.nvim",
-  dependencies = { "OXY2DEV/markview.nvim" },
-  opts = {},
-  cmd = "Store",
-}
+/home/silletr/.config/nvim/lua/plugins/store.lua

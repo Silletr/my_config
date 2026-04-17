@@ -1,6 +1,1 @@
-return {
-  "git@github.com:Silletr/GPTCode.nvim",
-  config = function()
-    require("GPTCodeNvim").setup()
-  end,
-}
+/home/silletr/.config/nvim/lua/plugins/gptcoding.lua
