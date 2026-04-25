@@ -10,7 +10,19 @@ export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.2.0/bin:$PATH"
 export PATH="$PATH:/home/silletr/.spicetify:/snap/bin:/usr/bin"
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+export DISPLAY=:0
+export WAYLAND_DISPLAY=wayland-0
+
+# WSLg Wayland runtime setup
+if [ -z "$XDG_RUNTIME_DIR" ]; then
+  export XDG_RUNTIME_DIR=/run/user/$UID
+  if [ ! -d "$XDG_RUNTIME_DIR" ]; then
+    sudo mkdir -p "$XDG_RUNTIME_DIR" && sudo chown $UID:$UID "$XDG_RUNTIME_DIR"
+  fi
+  # Symlink WSLg sockets
+  [ ! -L "$XDG_RUNTIME_DIR/wayland-0" ] && ln -s /mnt/wslg/runtime-dir/wayland-0 "$XDG_RUNTIME_DIR/"
+  [ ! -L "$XDG_RUNTIME_DIR/wayland-0.lock" ] && ln -s /mnt/wslg/runtime-dir/wayland-0.lock "$XDG_RUNTIME_DIR/"
+fi
 
 # === ENV ===
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
@@ -44,6 +56,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 [[ -s /usr/share/autojump/autojump.sh ]] && source /usr/share/autojump/autojump.sh
+
 # === Completion (your styles + fzf) ===
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors 'di=36'
@@ -70,7 +83,6 @@ alias lazy_git='/snap/bin/lazygit'
 alias jq='jq .'
 alias st='streamlit run main.py'
 alias calc='cd streamlit_apps/Exchange_Calculator'
-alias lazydevhelp='cd ~/Projects/LazyDeveloperHelper && source ~/Projects/ProjectsEnv/bin/activate && git switch dev'
 
 alias rython='python3 ~/Projects/Rython/rython/test.py'
 alias rython_dir="cd ~/Projects/Rython/ && source ~/Projects/ProjectsEnv/bin/activate"
@@ -83,8 +95,6 @@ alias telegram_bot='cd ~/Projects/bots/ && source ~/Projects/ProjectsEnv/bin/act
 alias pls='git pl'                          # Shorter pull
 alias gco='git checkout'                    # Branch switch
 alias lg='lazygit'                          # Faster typing
-alias poe='poetry shell'                    # Poetry env
-alias psh='poetry shell && echo "🐍 Poetry active"'
 alias python='python3'                      # WSL fix
 alias pip='python3 -m pip'
 alias tree='lsd --tree'
@@ -105,7 +115,7 @@ nvim() {
         [ -e /tmp/discord-ipc-0 ] && rm -f /tmp/discord-ipc-0
 
         socat UNIX-LISTEN:/tmp/discord-ipc-0,fork,reuseaddr \
-            EXEC:"/mnt/d/npiperelay/npiperelay.exe -ei -s //./pipe/discord-ipc-0",nofork 2>/dev/null &
+            EXEC:"/mnt/c/Users/Silletr/npiperelay/npiperelay.exe -ei -s //./pipe/discord-ipc-0",nofork 2>/dev/null &
     fi
     command nvim "$@"
 }
@@ -114,10 +124,8 @@ nvim() {
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 # === ZSH extras (fix compdump errors) ===
-
 # Added by deepsource CLI (shell completions)
 fpath=(~/.zsh/completions $fpath)
-autoload -Uz compinit && compinit
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 eval "$(but completions zsh)"
